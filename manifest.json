@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+
+    "name": "PrintUZ",
+    "description": "This extension modifies UZ printed tickets so they look human-friendly way",
+    "version": "1.1",
+    "icons": { "uz": "icon.png" , "qr": "newIcon.png"},
+	
+    "background": {
+        "persistent": false,
+        "scripts": [ "background.js" ]
+    },
+    "content_scripts": [
+        {
+            "matches": [ "*://booking.uz.gov.ua/*" ],
+            "js": [ "jquery-2.1.4.min.js",  "content.js" ]
+        }
+    ],
+
+    "page_action": {
+        "default_icon": "icon.png"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "https://ajax.googleapis.com/"
+    ]
+}
