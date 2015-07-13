@@ -13,7 +13,10 @@
     "content_scripts": [
         {
             "matches": [ "*://booking.uz.gov.ua/*" ],
-            "js": [ "jquery-2.1.4.min.js",  "content.js" ]
+            "js": [ "bower_components/jquery/dist/jquery.js",
+                    "bower_components/angularjs/angular.js",
+                    "scripts/app.js",
+                    "content.js" ]
         }
     ],
 
