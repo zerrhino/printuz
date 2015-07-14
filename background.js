@@ -1,5 +1,13 @@
-// JavaScript source code
-/* When the browser-action button is clicked... */
+'use strict';
+
+var $ticketTemplate;
+
+$.get(chrome.extension.getURL("ticketTemplate.html"), function(data) {
+    var $template = $(data).addClass("tkNew");
+    angular.bootstrap($template, []);
+    $ticketTemplate = $template;
+    console.log($ticketTemplate);
+});
 
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
@@ -13,16 +21,15 @@ chrome.pageAction.onClicked.addListener(function(tab){
         active: true,
         currentWindow: true
     }, function(tabs) {
-        /* ...and send a request for the DOM info... */
         chrome.tabs.sendMessage(
                 tabs[0].id,
-                {action: 'GetBody'},
+                {action: 'GetTicketJson'},
 				{},
                 /* ...also specifying a callback to be called 
                  *    from the receiving end (content script) */
                 function(el){
 	chrome.pageAction.setIcon({path: el.iconPath, tabId: tabs[0].id});
-	    
+	    console.log(el.ticket);
                     
                  });
     });
