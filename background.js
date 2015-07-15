@@ -3,7 +3,7 @@
 var $ticketTemplate;
 
 $.get(chrome.extension.getURL("ticketTemplate.html"), function(data) {
-    var $template = $(data).addClass("tkNew");
+    var $template = $(data);
     angular.bootstrap($template, []);
     $ticketTemplate = $template;
     console.log($ticketTemplate);
@@ -12,6 +12,20 @@ $.get(chrome.extension.getURL("ticketTemplate.html"), function(data) {
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (~tab.url.indexOf('booking.uz.gov.ua/result/eblank')) {
+        
+        chrome.tabs.sendMessage(
+                tabId,
+                {action: 'GetTicketJson'},
+				{},
+                function(el){
+                   if (el.isSuccess) {
+                   var scope = angular.element($ticketTemplate).scope();
+                   scope.$apply(function(){
+                        scope.ticket =  el.ticket;
+                        }); 
+                   }                 
+                 });
+        
         chrome.pageAction.show(tabId);
     }
 });
@@ -21,16 +35,18 @@ chrome.pageAction.onClicked.addListener(function(tab){
         active: true,
         currentWindow: true
     }, function(tabs) {
-        chrome.tabs.sendMessage(
-                tabs[0].id,
-                {action: 'GetTicketJson'},
+        
+        var tabId = tabs[0].id;chrome.tabs.sendMessage(
+                tabId,
+                {action: 'ToggleTicket', ticket : $ticketTemplate.html()},
 				{},
                 /* ...also specifying a callback to be called 
                  *    from the receiving end (content script) */
                 function(el){
-	chrome.pageAction.setIcon({path: el.iconPath, tabId: tabs[0].id});
-	    console.log(el.ticket);
-                    
+                    if (el.isSuccess) {
+	                   chrome.pageAction.setIcon({path: el.iconPath, tabId: tabId});
+                   }                 
                  });
+        
     });
   });

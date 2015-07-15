@@ -1,9 +1,24 @@
-<div id="ticketTemplate">
 <div>
+<div id="newTicket">
 	<div>
-		<span>{{ticket.Name}}</span>
-		<span>{{ticket.Surname}}</ticket>
+		<span>{{ticket.train}}</span>		
+		<span>{{ticket.coach}}</span>		
+		<span>{{ticket.seat}}</span>		
+		<span>{{ticket.departure}}</span>
 	</div>
-	<img ng-src="{{ticket.QRcode}}"/>
+	<div>
+		<span>{{ticket.origin}}</span>		
+		<span>{{ticket.destination}}</span>
+    </div>
+	<div>
+		<span>{{ticket.passengerName}}</span>		
+		<span>{{ticket.price}}</span>
+	</div>
+	<div>
+		<img ng-src="{{ticket.qrCode}}"/>
+	<div>
+	<div>
+		<span>{{ticket.number}}</span>
+	</div>	
 </div>
 </div>
